@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.registration.rest.model.UserDTO;
-import com.registration.rest.model.request.UserRequestDTO;
-import com.registration.rest.model.response.UserResponseDTO;
+import com.registration.rest.model.request.UserSignUpRequestDTO;
+import com.registration.rest.model.response.UserSignUpResponseDTO;
 import com.registration.rest.service.UserRestService;
 
 @Component
@@ -15,7 +15,7 @@ public class UserManager {
 	@Autowired
 	UserRestService userService;
 	
-	public UserResponseDTO createUser(UserRequestDTO userRequest) {
+	public UserSignUpResponseDTO createUser(UserSignUpRequestDTO userRequest) {
 		UserDTO user = toUserDTO(userRequest);
 		
 		if(userService.getUserByUserName(user.getUserName()) != null) {
@@ -25,14 +25,14 @@ public class UserManager {
 		return toUserResponeDTO(createdUser);
 	}
 	
-	private UserDTO toUserDTO(UserRequestDTO user) {
+	private UserDTO toUserDTO(UserSignUpRequestDTO user) {
 		UserDTO userDTO = new UserDTO();
 		BeanUtils.copyProperties(user, userDTO);
 		return userDTO;
 	}
 
-	private UserResponseDTO toUserResponeDTO(UserDTO userDTO) {
-		UserResponseDTO user = new UserResponseDTO();
+	private UserSignUpResponseDTO toUserResponeDTO(UserDTO userDTO) {
+		UserSignUpResponseDTO user = new UserSignUpResponseDTO();
 		BeanUtils.copyProperties(userDTO, user);
 		return user;
 	}

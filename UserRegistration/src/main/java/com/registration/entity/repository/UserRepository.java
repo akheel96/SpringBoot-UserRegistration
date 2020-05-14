@@ -2,9 +2,9 @@ package com.registration.entity.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.registration.entity.model.User;
+import com.registration.entity.model.UserEntity;
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-	public User findByUserName(String userName);
+	public UserEntity findByUserName(String userName);
 }

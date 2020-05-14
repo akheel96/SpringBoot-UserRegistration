@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEntity {
 
 	@Id
 	@Column(unique = true)
