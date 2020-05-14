@@ -37,7 +37,7 @@ public class UserRestServiceImpl implements UserRestService {
 		UUID uuid = UUID.randomUUID();
 		userDTO.setId(uuid.toString().replace("-", ""));
 		userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-		UserEntity savedUser = userRepository.save(toUser(userDTO));
+		UserEntity savedUser = userRepository.save(toUserEntity(userDTO));
 		return toUserDTO(savedUser);
 	}
 
@@ -47,22 +47,34 @@ public class UserRestServiceImpl implements UserRestService {
 		return user == null ? null : toUserDTO(user);
 	}
 
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity user = userRepository.findByUserName(username);
+		return user == null ? null : new User(user.getUserName(), user.getPassword(), new ArrayList<>());
+	}
+	
+	@Override
+	public UserDTO updateUser(String userName, UserDTO userDTO) {
+		UserEntity updatedUser = userRepository.save(toUserEntity(userDTO));
+		return toUserDTO(updatedUser);
+	}
+	
+	@Override
+	public void deleteUser(UserDTO user) {
+		UserEntity userEntity = toUserEntity(user);
+		userRepository.delete(userEntity);
+	}
+
 	private UserDTO toUserDTO(UserEntity user) {
 		UserDTO userDTO = new UserDTO();
 		BeanUtils.copyProperties(user, userDTO);
 		return userDTO;
 	}
 
-	private UserEntity toUser(UserDTO userDTO) {
+	private UserEntity toUserEntity(UserDTO userDTO) {
 		UserEntity user = new UserEntity();
 		BeanUtils.copyProperties(userDTO, user);
 		return user;
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEntity user = userRepository.findByUserName(username);
-		return user == null ? null : new User(user.getUserName(), user.getPassword(), new ArrayList<>());
 	}
 
 }
