@@ -1,5 +1,8 @@
 package com.registration.rest.manager;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +38,11 @@ public class UserManager {
 			throw new NotFoundException(ErrorMessages.USER_NOT_FOUND.getErrorMessage());
 		}
 		return toUserResponeDTO(userDTO);
+	}
+
+	public List<UserResponseDTO> getUsers(int page, int limit) {
+		List<UserDTO> users = userService.getUsers(page, limit);
+		return users.stream().map(this::toUserResponeDTO).collect(Collectors.toList());
 	}
 
 	public UserResponseDTO updateUser(String userName, UserSignUpRequestDTO user) {
