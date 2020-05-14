@@ -1,6 +1,6 @@
 package com.registration.rest.model.response;
 
-public class UserSignUpResponseDTO {
+public class UserResponseDTO {
 
 	private String userName;
 	private String email;
