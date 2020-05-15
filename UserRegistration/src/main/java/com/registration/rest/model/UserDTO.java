@@ -1,6 +1,7 @@
 package com.registration.rest.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDTO implements Serializable {
 
@@ -8,25 +9,16 @@ public class UserDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3084339962611034710L;
-	private String id;
 	private String userName;
 	private String password;
 	private String email;
 	private String firstName;
 	private String lastName;
 	private String mobileno;
-	private String country;
 	private String encryptedPassword;
 	private String emailVerificationToken;
 	private Boolean emailVerificationStatus = false;
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
+	private List<AddressDTO> address;
 
 	public String getUserName() {
 		return userName;
@@ -76,14 +68,6 @@ public class UserDTO implements Serializable {
 		this.mobileno = phoneno;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getEncryptedPassword() {
 		return encryptedPassword;
 	}
@@ -106,6 +90,14 @@ public class UserDTO implements Serializable {
 
 	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
+	}
+
+	public List<AddressDTO> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<AddressDTO> address) {
+		this.address = address;
 	}
 
 }

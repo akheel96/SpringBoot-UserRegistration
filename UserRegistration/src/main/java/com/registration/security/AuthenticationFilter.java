@@ -15,9 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.registration.app.SpringApplicationContext;
-import com.registration.rest.model.request.UserLoginRequestDTO;
-import com.registration.rest.service.UserRestService;
+import com.registration.rest.model.request.UserLoginRequestModel;
 import com.registration.security.jwt.JwtTokenProvider;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -33,8 +31,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			throws AuthenticationException {
 
 		try {
-			UserLoginRequestDTO credentials = new ObjectMapper().readValue(request.getInputStream(),
-					UserLoginRequestDTO.class);
+			UserLoginRequestModel credentials = new ObjectMapper().readValue(request.getInputStream(),
+					UserLoginRequestModel.class);
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getUserName(),
 					credentials.getPassword(), new ArrayList<>()));
 		} catch (IOException e) {
@@ -50,8 +48,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 		String token = JwtTokenProvider.getJwtToken(username);
 
-		UserRestService userService = (UserRestService) SpringApplicationContext.getBean("userRestServiceImpl");
-		response.addHeader("UserID", userService.getUserByUserName(username).getId());
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 
 	}

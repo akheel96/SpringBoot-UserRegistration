@@ -1,19 +1,16 @@
 package com.registration.rest.model.response;
 
-public class UserResponseDTO {
+import java.util.List;
+
+public class UserResponseModel {
 
 	private String userName;
 	private String email;
 	private String firstName;
 	private String lastName;
-	private String country;
+	private String mobileno;
+	List<AddressDetailsModel> address;
 	
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
 	public String getUserName() {
 		return userName;
 	}
@@ -37,5 +34,17 @@ public class UserResponseDTO {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getMobileno() {
+		return mobileno;
+	}
+	public void setMobileno(String mobileno) {
+		this.mobileno = mobileno;
+	}
+	public List<AddressDetailsModel> getAddress() {
+		return address;
+	}
+	public void setAddress(List<AddressDetailsModel> address) {
+		this.address = address;
 	}
 }
