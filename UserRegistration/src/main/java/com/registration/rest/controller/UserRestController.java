@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.registration.rest.manager.UserManager;
 import com.registration.rest.model.request.UserSignUpRequestDTO;
-import com.registration.rest.model.response.UserDetailsDTO;
+import com.registration.rest.model.response.UserResponseDTO;
 
 @RestController
 @RequestMapping(value = { "/users" })
@@ -27,18 +27,18 @@ public class UserRestController {
 	private UserManager userManager;
 
 	@PostMapping
-	public ResponseEntity<UserDetailsDTO> addUser(@RequestBody UserSignUpRequestDTO user) {
+	public ResponseEntity<UserResponseDTO> addUser(@RequestBody UserSignUpRequestDTO user) {
 		return new ResponseEntity<>(userManager.createUser(user), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/{uname}")
-	public ResponseEntity<UserDetailsDTO> updateUser(@RequestBody UserSignUpRequestDTO user,
+	public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserSignUpRequestDTO user,
 			@PathVariable(value = "uname") String uname) {
 		return new ResponseEntity<>(userManager.updateUser(uname, user), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{uname}")
-	public ResponseEntity<UserDetailsDTO> getUser(@PathVariable(value = "uname") String uname) {
+	public ResponseEntity<UserResponseDTO> getUser(@PathVariable(value = "uname") String uname) {
 		return new ResponseEntity<>(userManager.getUser(uname), HttpStatus.OK);
 
 	}
@@ -50,7 +50,7 @@ public class UserRestController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<UserDetailsDTO>> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
+	public ResponseEntity<List<UserResponseDTO>> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "limit", defaultValue = "20") int limit) {
 		return new ResponseEntity<>(userManager.getUsers(page, limit), HttpStatus.OK);
 	}
