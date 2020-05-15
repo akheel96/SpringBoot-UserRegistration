@@ -12,7 +12,7 @@ import com.registration.exception.BadRequestException;
 import com.registration.exception.NotFoundException;
 import com.registration.rest.model.UserDTO;
 import com.registration.rest.model.request.UserSignUpRequestDTO;
-import com.registration.rest.model.response.UserResponseDTO;
+import com.registration.rest.model.response.UserDetailsDTO;
 import com.registration.rest.service.UserRestService;
 
 @Component
@@ -21,38 +21,39 @@ public class UserManager {
 	@Autowired
 	UserRestService userService;
 
-	public UserResponseDTO createUser(UserSignUpRequestDTO userRequest) {
+	public UserDetailsDTO createUser(UserSignUpRequestDTO userRequest) {
 		UserDTO userDTO = toUserDTO(userRequest);
 
 		if (userService.getUserByUserName(userDTO.getUserName()) != null) {
 			throw new BadRequestException(ErrorMessages.USER_ALREADY_EXISTS.getErrorMessage());
 		}
+
 		UserDTO createdUser = userService.addUser(userDTO);
-		return toUserResponeDTO(createdUser);
+		return toUserDetailsDTO(createdUser);
 	}
 
-	public UserResponseDTO getUser(String userName) {
+	public UserDetailsDTO getUser(String userName) {
 
 		UserDTO userDTO = userService.getUserByUserName(userName);
 		if (userDTO == null) {
 			throw new NotFoundException(ErrorMessages.USER_NOT_FOUND.getErrorMessage());
 		}
-		return toUserResponeDTO(userDTO);
+		return toUserDetailsDTO(userDTO);
 	}
 
-	public List<UserResponseDTO> getUsers(int page, int limit) {
+	public List<UserDetailsDTO> getUsers(int page, int limit) {
 		List<UserDTO> users = userService.getUsers(page, limit);
-		return users.stream().map(this::toUserResponeDTO).collect(Collectors.toList());
+		return users.stream().map(this::toUserDetailsDTO).collect(Collectors.toList());
 	}
 
-	public UserResponseDTO updateUser(String userName, UserSignUpRequestDTO user) {
+	public UserDetailsDTO updateUser(String userName, UserSignUpRequestDTO user) {
 
 		UserDTO userDTO = userService.getUserByUserName(userName);
 		if (userDTO == null) {
 			throw new NotFoundException(ErrorMessages.USER_NOT_FOUND.getErrorMessage());
 		}
-		updateUserDTO(userDTO, user);
-		return toUserResponeDTO(userService.updateUser(userName, userDTO));
+		updateUserDTO(userDTO.getUserDetails(), user);
+		return toUserDetailsDTO(userService.updateUser(userName, userDTO));
 	}
 
 	public void deleteUser(String userName) {
@@ -61,7 +62,7 @@ public class UserManager {
 		userService.deleteUser(userDTO);
 	}
 
-	private void updateUserDTO(UserDTO toUser, UserSignUpRequestDTO fromUser) {
+	private void updateUserDTO(UserDetailsDTO toUser, UserSignUpRequestDTO fromUser) {
 		String firstName = fromUser.getFirstName();
 		if (firstName != null && !firstName.isEmpty()) {
 			toUser.setFirstName(firstName);
@@ -82,13 +83,17 @@ public class UserManager {
 
 	private UserDTO toUserDTO(UserSignUpRequestDTO user) {
 		UserDTO userDTO = new UserDTO();
+
+		UserDetailsDTO userDetails = new UserDetailsDTO();
+		BeanUtils.copyProperties(user, userDetails);
+		userDTO.setUserDetails(userDetails);
 		BeanUtils.copyProperties(user, userDTO);
 		return userDTO;
 	}
 
-	private UserResponseDTO toUserResponeDTO(UserDTO userDTO) {
-		UserResponseDTO user = new UserResponseDTO();
-		BeanUtils.copyProperties(userDTO, user);
+	private UserDetailsDTO toUserDetailsDTO(UserDTO userDTO) {
+		UserDetailsDTO user = new UserDetailsDTO();
+		BeanUtils.copyProperties(userDTO.getUserDetails(), user);
 		return user;
 	}
 

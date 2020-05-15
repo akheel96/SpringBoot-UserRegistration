@@ -1,6 +1,5 @@
 package com.registration.rest.service.impl;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.registration.entity.model.UserEntity;
 import com.registration.entity.repository.UserRepository;
 import com.registration.rest.model.UserDTO;
+import com.registration.rest.model.response.UserDetailsDTO;
 import com.registration.rest.service.UserRestService;
 
 @Service
@@ -71,12 +71,19 @@ public class UserRestServiceImpl implements UserRestService {
 
 	private UserDTO toUserDTO(UserEntity user) {
 		UserDTO userDTO = new UserDTO();
+
+		UserDetailsDTO userDetails = new UserDetailsDTO();
+		BeanUtils.copyProperties(user, userDetails);
+
+		userDTO.setUserDetails(userDetails);
 		BeanUtils.copyProperties(user, userDTO);
+
 		return userDTO;
 	}
 
 	private UserEntity toUserEntity(UserDTO userDTO) {
 		UserEntity user = new UserEntity();
+		BeanUtils.copyProperties(userDTO.getUserDetails(), user);
 		BeanUtils.copyProperties(userDTO, user);
 		return user;
 	}
