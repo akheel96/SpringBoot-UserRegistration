@@ -1,6 +1,6 @@
 package com.registration.rest.model.request;
 
-public class UserLoginRequestDTO {
+public class UserLoginRequestModel {
 
 	private String userName;
 	private String password;

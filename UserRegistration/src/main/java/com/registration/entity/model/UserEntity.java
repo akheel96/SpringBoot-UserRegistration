@@ -1,8 +1,12 @@
 package com.registration.entity.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,8 +18,6 @@ import org.hibernate.validator.constraints.Length;
 public class UserEntity {
 
 	@Id
-	@Column(unique = true)
-	private String id;
 	@Column(name = "username", unique = true)
 	@NotEmpty
 	@Length(min = 5, message = "Your user name must have at least 5 characters")
@@ -34,19 +36,13 @@ public class UserEntity {
 	@NotEmpty(message = "Please provide your last name")
 	private String lastName;
 	private String mobileno;
-	private String country;
 	@Column(name = "verificationtoken")
 	private String verificationToken;
 	@Column(name = "verificationstatus")
 	private Boolean verificationStatus = false;
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<AddressEntity> address;
 
 	public String getUserName() {
 		return userName;
@@ -62,14 +58,6 @@ public class UserEntity {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getPassword() {
@@ -118,6 +106,14 @@ public class UserEntity {
 
 	public void setVerificationToken(String verificationToken) {
 		this.verificationToken = verificationToken;
+	}
+
+	public List<AddressEntity> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<AddressEntity> address) {
+		this.address = address;
 	}
 
 }
