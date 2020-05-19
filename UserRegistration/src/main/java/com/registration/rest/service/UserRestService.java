@@ -13,6 +13,8 @@ public interface UserRestService extends UserDetailsService {
 	public UserDTO addUser(UserDTO userDTO);
 
 	public UserDTO getUserByUserName(String userName);
+	
+	public UserDTO getUserByEmail(String email);
 
 	public UserDTO updateUser(String userName, UserDTO user);
 

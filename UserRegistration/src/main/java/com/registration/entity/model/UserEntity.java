@@ -11,8 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.validator.constraints.Length;
-
 @Entity
 @Table(name = "user")
 public class UserEntity {
@@ -20,27 +18,21 @@ public class UserEntity {
 	@Id
 	@Column(name = "username", unique = true)
 	@NotEmpty
-	@Length(min = 5, message = "Your user name must have at least 5 characters")
 	private String userName;
-	@Length(min = 5, message = "Your password must have at least 5 characters")
-    @NotEmpty(message = "Please provide your password")
 	private String password;
 	@Column(unique = true)
-	@NotEmpty(message = "Please provide an email")
 	@Email(message = "Please provide a valid email")
 	private String email;
 	@Column(name = "firstname")
-	@NotEmpty(message = "Please provide your first name")
 	private String firstName;
 	@Column(name = "lastname")
-	@NotEmpty(message = "Please provide your last name")
 	private String lastName;
 	private String mobileno;
 	@Column(name = "verificationtoken")
 	private String verificationToken;
 	@Column(name = "verificationstatus")
 	private Boolean verificationStatus = false;
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<AddressEntity> address;
 

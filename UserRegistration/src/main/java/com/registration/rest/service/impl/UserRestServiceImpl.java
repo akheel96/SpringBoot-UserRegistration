@@ -70,4 +70,10 @@ public class UserRestServiceImpl implements UserRestService {
 		userRepository.delete(userEntity);
 	}
 
+	@Override
+	public UserDTO getUserByEmail(String email) {
+		UserEntity user = userRepository.findByEmail(email);
+		return user != null ? EntityDtoMappingUtil.toUserDTO(user) : null;
+	}
+
 }

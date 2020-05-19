@@ -2,6 +2,8 @@ package com.registration.rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class UserRestController {
 	private UserRestManager userManager;
 
 	@PostMapping
-	public ResponseEntity<UserResponseModel> addUser(@RequestBody UserSignUpRequestModel user) {
+	public ResponseEntity<UserResponseModel> addUser(@Valid @RequestBody UserSignUpRequestModel user) {
 		return new ResponseEntity<>(userManager.createUser(user), HttpStatus.CREATED);
 	}
 

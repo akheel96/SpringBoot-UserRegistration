@@ -2,15 +2,21 @@ package com.registration.rest.model.request;
 
 import java.util.List;
 
+import com.registration.annotation.ValidEmail;
+import com.registration.annotation.ValidMobileNo;
+import com.registration.annotation.ValidPassword;
 import com.registration.rest.model.response.AddressDetailsModel;
 
 public class UserSignUpRequestModel {
 
 	private String userName;
+	@ValidPassword
 	private String password;
+	@ValidEmail
 	private String email;
 	private String firstName;
 	private String lastName;
+	@ValidMobileNo
 	private String mobileno;
 	List<AddressDetailsModel> address;
 

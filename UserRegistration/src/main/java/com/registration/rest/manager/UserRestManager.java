@@ -24,7 +24,8 @@ public class UserRestManager {
 	public UserResponseModel createUser(UserSignUpRequestModel userRequest) {
 		UserDTO userDTO = EntityDtoMappingUtil.toUserDTO(userRequest);
 
-		if (userService.getUserByUserName(userDTO.getUserName()) != null) {
+		if (userService.getUserByUserName(userDTO.getUserName()) != null
+				&& userService.getUserByEmail(userRequest.getEmail()) != null) {
 			throw new BadRequestException(ErrorMessages.USER_ALREADY_EXISTS.getErrorMessage());
 		}
 		UserDTO createdUser = userService.addUser(userDTO);
@@ -70,7 +71,7 @@ public class UserRestManager {
 		if (lastName != null && !lastName.isEmpty()) {
 			toUser.setLastName(lastName);
 		}
-		
+
 		String mobileno = fromUser.getMobileno();
 		if (mobileno != null && !mobileno.isEmpty()) {
 			toUser.setMobileno(mobileno);
