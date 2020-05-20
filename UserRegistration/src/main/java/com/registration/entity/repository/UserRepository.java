@@ -7,4 +7,6 @@ import com.registration.entity.model.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
 	public UserEntity findByUserName(String userName);
+
+	public UserEntity findByEmail(String email);
 }

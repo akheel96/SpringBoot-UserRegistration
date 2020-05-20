@@ -55,7 +55,10 @@ public class UserRestServiceImpl implements UserRestService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByUserName(username);
-		return user == null ? null : new User(user.getUserName(), user.getPassword(), new ArrayList<>());
+		if (user != null && user.getVerificationStatus()) {
+			return new User(user.getUserName(), user.getPassword(), new ArrayList<>());
+		}
+		return null;
 	}
 
 	@Override
@@ -68,6 +71,12 @@ public class UserRestServiceImpl implements UserRestService {
 	public void deleteUser(UserDTO user) {
 		UserEntity userEntity = EntityDtoMappingUtil.toUserEntity(user);
 		userRepository.delete(userEntity);
+	}
+
+	@Override
+	public UserDTO getUserByEmail(String email) {
+		UserEntity user = userRepository.findByEmail(email);
+		return user != null ? EntityDtoMappingUtil.toUserDTO(user) : null;
 	}
 
 }
