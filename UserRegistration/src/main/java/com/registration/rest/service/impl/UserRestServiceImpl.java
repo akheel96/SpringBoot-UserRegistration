@@ -55,7 +55,10 @@ public class UserRestServiceImpl implements UserRestService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByUserName(username);
-		return user == null ? null : new User(user.getUserName(), user.getPassword(), new ArrayList<>());
+		if (user != null && user.getVerificationStatus()) {
+			return new User(user.getUserName(), user.getPassword(), new ArrayList<>());
+		}
+		return null;
 	}
 
 	@Override

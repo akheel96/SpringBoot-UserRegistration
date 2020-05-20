@@ -34,17 +34,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, Endpoints.SIGNUP_ENDPOINT).permitAll()
-				.anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
-				.addFilter(new AuthorizationFilter(authenticationManager()))
+				.antMatchers(HttpMethod.PUT, Endpoints.VERIFY_EMAIL_ENDPOINT).permitAll().anyRequest().authenticated()
+				.and().addFilter(getAuthenticationFilter()).addFilter(new AuthorizationFilter(authenticationManager()))
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
+
 	private AuthenticationFilter getAuthenticationFilter() throws Exception {
 		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
-		//By default the URL is /login. Change the value to set custom URL
+		// By default the URL is /login. Change the value to set custom URL
 		filter.setFilterProcessesUrl(Endpoints.SIGNIN_ENDPOINT);
 		return filter;
-		
+
 	}
 
 }

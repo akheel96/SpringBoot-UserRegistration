@@ -14,6 +14,10 @@ public class ApplicationProperties {
 		return env.getProperty("security.token.secret");
 	}
 	
+	public String getVerificationTokenSecret() {
+		return env.getProperty("security.verification.token.secret");
+	}
+	
 	
 
 }

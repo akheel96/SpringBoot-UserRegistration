@@ -42,13 +42,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
 		if (token != null) {
 			token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
-			String user = Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token).getBody()
-					.getSubject();
-
+			String user = Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token)
+					.getBody().getSubject();
+			
 			if (user != null) {
 				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
 			}
-
 			return null;
 		}
 		return null;

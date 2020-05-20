@@ -13,7 +13,14 @@ import com.registration.rest.model.UserDTO;
 import com.registration.rest.model.request.UserSignUpRequestModel;
 import com.registration.rest.model.response.UserResponseModel;
 import com.registration.rest.service.UserRestService;
+import com.registration.security.SecurityConstants;
+import com.registration.security.jwt.JwtTokenProvider;
 import com.registration.utils.EntityDtoMappingUtil;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 
 @Component
 public class UserRestManager {
@@ -22,10 +29,13 @@ public class UserRestManager {
 	UserRestService userService;
 
 	public UserResponseModel createUser(UserSignUpRequestModel userRequest) {
+		if (userRequest == null) {
+			throw new BadRequestException(ErrorMessages.PROVIDE_USER_DETAILS.getErrorMessage());
+		}
 		UserDTO userDTO = EntityDtoMappingUtil.toUserDTO(userRequest);
 
 		if (userService.getUserByUserName(userDTO.getUserName()) != null
-				&& userService.getUserByEmail(userRequest.getEmail()) != null) {
+				|| userService.getUserByEmail(userRequest.getEmail()) != null) {
 			throw new BadRequestException(ErrorMessages.USER_ALREADY_EXISTS.getErrorMessage());
 		}
 		UserDTO createdUser = userService.addUser(userDTO);
@@ -59,7 +69,23 @@ public class UserRestManager {
 	public void deleteUser(String userName) {
 
 		UserDTO userDTO = userService.getUserByUserName(userName);
-		userService.deleteUser(userDTO);
+		if (userDTO != null) {
+			userService.deleteUser(userDTO);
+		}
+	}
+
+	public void verifyUser(String token) {
+		try {
+			Jws<Claims> parseClaimsJws = Jwts.parser().setSigningKey(SecurityConstants.getVerificationTokenSecret())
+					.parseClaimsJws(token);
+			String userName = parseClaimsJws.getBody().getSubject();
+			UserDTO userDTO = userService.getUserByUserName(userName);
+			userDTO.setEmailVerificationStatus(true);
+			userService.updateUser(userName, userDTO);
+		} catch (JwtException e) {
+			throw new BadRequestException(ErrorMessages.INVALID_TOKEN.getErrorMessage());
+		}
+
 	}
 
 	private void updateUserDTO(UserDTO toUser, UserSignUpRequestModel fromUser) {
