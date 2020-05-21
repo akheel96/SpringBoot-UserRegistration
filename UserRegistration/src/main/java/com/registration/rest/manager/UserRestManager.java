@@ -14,7 +14,6 @@ import com.registration.rest.model.request.UserSignUpRequestModel;
 import com.registration.rest.model.response.UserResponseModel;
 import com.registration.rest.service.UserRestService;
 import com.registration.security.SecurityConstants;
-import com.registration.security.jwt.JwtTokenProvider;
 import com.registration.utils.EntityDtoMappingUtil;
 
 import io.jsonwebtoken.Claims;

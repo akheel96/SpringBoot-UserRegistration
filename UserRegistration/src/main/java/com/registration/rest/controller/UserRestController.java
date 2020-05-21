@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.registration.annotation.VerifyUser;
 import com.registration.app.event.OnRegistrationCompleteEvent;
 import com.registration.rest.manager.UserRestManager;
 import com.registration.rest.model.request.UserSignUpRequestModel;
@@ -38,12 +39,14 @@ public class UserRestController {
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
 
+	@VerifyUser
 	@PutMapping(value = "/users/{uname}")
 	public ResponseEntity<UserResponseModel> updateUser(@RequestBody UserSignUpRequestModel user,
 			@PathVariable(value = "uname") String uname) {
 		return new ResponseEntity<>(userManager.updateUser(uname, user), HttpStatus.OK);
 	}
 
+	@VerifyUser
 	@GetMapping(value = "/users/{uname}")
 	public ResponseEntity<UserResponseModel> getUser(@PathVariable(value = "uname") String uname) {
 		return new ResponseEntity<>(userManager.getUser(uname), HttpStatus.OK);
