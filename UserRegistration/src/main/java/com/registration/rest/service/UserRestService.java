@@ -16,7 +16,7 @@ public interface UserRestService extends UserDetailsService {
 	
 	public UserDTO getUserByEmail(String email);
 
-	public UserDTO updateUser(String userName, UserDTO user);
+	public UserDTO updateUser(UserDTO user);
 
 	public void deleteUser(UserDTO user);
 }

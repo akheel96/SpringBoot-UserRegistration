@@ -37,12 +37,15 @@ public class UserRestServiceImpl implements UserRestService {
 
 	@Override
 	public UserDTO addUser(UserDTO userDTO) {
-		userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-		userDTO.getAddress().forEach(address -> {
+		UserEntity userEntity = EntityDtoMappingUtil.toUserEntity(userDTO);
+
+		userEntity.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+		userEntity.getAddress().forEach(address -> {
 			address.setId(UUID.randomUUID().toString().replace("-", ""));
-			address.setUser(userDTO);
+			address.setUser(userEntity);
 		});
-		UserEntity savedUser = userRepository.save(EntityDtoMappingUtil.toUserEntity(userDTO));
+
+		UserEntity savedUser = userRepository.save(userEntity);
 		return EntityDtoMappingUtil.toUserDTO(savedUser);
 	}
 
@@ -62,7 +65,7 @@ public class UserRestServiceImpl implements UserRestService {
 	}
 
 	@Override
-	public UserDTO updateUser(String userName, UserDTO userDTO) {
+	public UserDTO updateUser(UserDTO userDTO) {
 		UserEntity updatedUser = userRepository.save(EntityDtoMappingUtil.toUserEntity(userDTO));
 		return EntityDtoMappingUtil.toUserDTO(updatedUser);
 	}

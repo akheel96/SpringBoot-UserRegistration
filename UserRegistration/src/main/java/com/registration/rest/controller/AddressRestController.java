@@ -23,14 +23,14 @@ public class AddressRestController {
 
 	@VerifyUser
 	@GetMapping
-	public ResponseEntity<List<AddressDetailsModel>> getAddress(@PathVariable(value = "uname") String userName) {
-		return new ResponseEntity<>(addressManager.getAddress(userName), HttpStatus.OK);
+	public ResponseEntity<List<AddressDetailsModel>> getAddress(@PathVariable(value = "uname") String uname) {
+		return new ResponseEntity<>(addressManager.getAddress(uname), HttpStatus.OK);
 	}
 
 	@VerifyUser
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<AddressDetailsModel> getAddress(@PathVariable(value = "uname") String userName,
+	public ResponseEntity<AddressDetailsModel> getAddress(@PathVariable(value = "uname") String uname,
 			@PathVariable(value = "id") String id) {
-		return new ResponseEntity<>(addressManager.getAddress(userName, id), HttpStatus.OK);
+		return new ResponseEntity<>(addressManager.getAddress(uname, id), HttpStatus.OK);
 	}
 }

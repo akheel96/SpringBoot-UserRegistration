@@ -38,6 +38,12 @@ public class EntityDtoMappingUtil {
 		return userDTO;
 	}
 
+	public static UserSignUpRequestModel toUserSignUpRequestModel(UserDTO user) {
+		UserSignUpRequestModel model = new UserSignUpRequestModel();
+		mapper.map(user, model);
+		return model;
+	}
+
 	public static UserResponseModel toUserResponeModel(UserDTO userDTO) {
 		UserResponseModel user = new UserResponseModel();
 		mapper.map(userDTO, user);
