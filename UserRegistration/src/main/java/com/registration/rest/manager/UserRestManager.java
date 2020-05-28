@@ -62,7 +62,7 @@ public class UserRestManager {
 			throw new NotFoundException(ErrorMessages.USER_NOT_FOUND.getErrorMessage());
 		}
 		updateUserDTO(userDTO, user);
-		return EntityDtoMappingUtil.toUserResponeModel(userService.updateUser(userName, userDTO));
+		return EntityDtoMappingUtil.toUserResponeModel(userService.updateUser(userDTO));
 	}
 
 	public void deleteUser(String userName) {
@@ -80,7 +80,7 @@ public class UserRestManager {
 			String userName = parseClaimsJws.getBody().getSubject();
 			UserDTO userDTO = userService.getUserByUserName(userName);
 			userDTO.setEmailVerificationStatus(true);
-			userService.updateUser(userName, userDTO);
+			userService.updateUser(userDTO);
 		} catch (JwtException e) {
 			throw new BadRequestException(ErrorMessages.INVALID_TOKEN.getErrorMessage());
 		}

@@ -15,7 +15,6 @@ public class UserDTO implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String mobileno;
-	private String encryptedPassword;
 	private String emailVerificationToken;
 	private Boolean emailVerificationStatus = false;
 	private List<AddressDTO> address;
@@ -66,14 +65,6 @@ public class UserDTO implements Serializable {
 
 	public void setMobileno(String phoneno) {
 		this.mobileno = phoneno;
-	}
-
-	public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
-
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
 	}
 
 	public String getEmailVerificationToken() {
